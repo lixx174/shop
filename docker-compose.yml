@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+
+  redis:
+    container_name: redis-local
+    image: redis:latest
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+
+  mysql:
+    container_name: mysql-local
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: shop
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  # 注意：自定义db需要初始化schema(https://github.com/nacos-group/nacos-docker/issues/121)
+  nacos:
+    container_name: nacos-local
+    image: nacos/nacos-server
+    environment:
+      PREFER_HOST_MODE: hostname
+      MODE: standalone
+      SPRING_DATASOURCE_PLATFORM: mysql
+      MYSQL_SERVICE_HOST: mysql-local
+      MYSQL_SERVICE_DB_NAME: nacos
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_USER: root
+      MYSQL_SERVICE_PASSWORD: root
+      MYSQL_SERVICE_DB_PARAM: useUnicode=true&characterEncoding=utf-8&isSSL=false
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-data:
+  redis-data:
+

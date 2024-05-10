@@ -1,0 +1,6 @@
+rootProject.name = 'shop'
+include 'app'
+include 'admin'
+include 'authorization'
+include 'gateway'
+
