@@ -27,7 +27,7 @@ public class RegisteredClientRepositoryTest {
 
     @Test
     @DisplayName("注册客户端")
-    public void register(){
+    public void register() {
         registeredClientRepo.save(
                 RegisteredClient.withId(UUID.randomUUID().toString())
                         .clientId("shop-app")

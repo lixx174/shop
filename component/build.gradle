@@ -1,0 +1,8 @@
+description = '公共组件'
+
+dependencies {
+    implementation project(':types')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}

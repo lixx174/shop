@@ -13,7 +13,7 @@ public class BasicAuthTest {
 
     @Test
     @DisplayName("Basic Auth 加密")
-    public void auth(){
+    public void auth() {
         String username = "1";
         String password = "1";
 

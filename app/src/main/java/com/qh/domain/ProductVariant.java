@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  *
  * @author Jinx
  */
-public class ProductVariant{
+public class ProductVariant {
 
     private Integer id;
 

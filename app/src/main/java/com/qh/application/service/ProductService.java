@@ -1,8 +1,8 @@
 package com.qh.application.service;
 
-import com.qh.application.PageQuery;
-import com.qh.application.PageReply;
-import com.qh.application.dto.ProductDto;
+import com.qh.application.model.PageQuery;
+import com.qh.application.model.PageReply;
+import com.qh.application.model.ProductDto;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
 
-    public PageReply<ProductDto> page(PageQuery query){
+    public PageReply<ProductDto> page(PageQuery query) {
         return null;
     }
 }

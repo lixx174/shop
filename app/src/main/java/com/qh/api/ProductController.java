@@ -1,9 +1,9 @@
 package com.qh.api;
 
-import com.qh.application.PageQuery;
-import com.qh.application.PageReply;
-import com.qh.application.Result;
-import com.qh.application.dto.ProductDto;
+import com.qh.application.model.PageQuery;
+import com.qh.application.model.PageReply;
+import com.qh.application.model.ProductDto;
+import com.qh.application.model.Result;
 import com.qh.application.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

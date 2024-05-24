@@ -3,4 +3,7 @@ include 'app'
 include 'admin'
 include 'authorization'
 include 'gateway'
+include 'types'
+include 'payment'
+include 'component'
 

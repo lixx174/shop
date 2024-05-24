@@ -14,4 +14,6 @@ POST http://127.0.0.1:8080/oauth2/token
 Content-Type: application/x-www-form-urlencoded
 Authorization: Basic shop-app shop-secret
 
-grant_type = sms & mobile = 1 & code = 110110
+grant_type = sms &
+mobile = 1 &
+code = 110110

@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: ${random.int[10000,30000]}
   servlet:
     context-path: /app
 
@@ -19,6 +19,10 @@ spring:
         namespace: fd665b49-1c10-4f45-9abd-35f39854b74f
       discovery:
         namespace: fd665b49-1c10-4f45-9abd-35f39854b74f
+
+    openfeign:
+      circuitbreaker:
+        enabled: true
 
   config:
     import:

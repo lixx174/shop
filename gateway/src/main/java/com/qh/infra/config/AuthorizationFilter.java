@@ -20,7 +20,7 @@ public class AuthorizationFilter implements GlobalFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String tokenValue = exchange.getRequest().getHeaders().getFirst("authorization");
-        if(StringUtils.hasText(tokenValue) && tokenValue.startsWith("Bearer ")){
+        if (StringUtils.hasText(tokenValue) && tokenValue.startsWith("Bearer ")) {
             tokenValue = tokenValue.substring(7);
 
             // TODO 校验token  解析token
