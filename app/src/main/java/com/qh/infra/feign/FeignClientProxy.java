@@ -46,7 +46,10 @@ public class FeignClientProxy implements Client {
         if (response == null) {
             System.out.printf("feign(%s) response ===> %s%n", clientName, "empty response");
         } else {
-            // TODO response 的 inputStream 只能读取一次
+            // response 的 inputStream 只能读取一次, 这里读完换成可重读的流(ByteArrayBody)
+            // FIXME 对原流程做了修改
+            response = response.toBuilder().body(response.body().asInputStream().readAllBytes()).build();
+
             System.out.printf(
                     "feign(%s) response ===> [%s - %s] -> %s%n",
                     clientName,
