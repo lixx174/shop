@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
  * 低版本的 <a href="https://spring.io/security/cve-2024-22243">UriComponentsBuilder</a> 有漏洞 会导致idea警告
  *
  * @author Jinx
- * @deprecated 记录的响应日志不纯粹且无法记录到超时日志  参考{@link FeignClientPostProcessor}
+ * @deprecated 记录的响应日志不纯粹且无法记录到超时日志  参考{@link FeignClientProxy}
  */
 @Deprecated
 public class FeignInteraction implements RequestInterceptor, ResponseInterceptor {

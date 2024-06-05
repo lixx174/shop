@@ -2,7 +2,7 @@ package com.qh.infra.feign;
 
 import com.qh.application.model.Result;
 import com.qh.domain.RestException;
-import com.qh.infra.feign.client.PaymentClient;
+import com.qh.infra.feign.client.FeignPaymentClient;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.cloud.openfeign.Targeter;
@@ -17,21 +17,23 @@ import org.springframework.stereotype.Component;
  * @see Targeter 当容器内存在 {@link CircuitBreakerFactory} 时，会注入 FeignCircuitBreakerTargeter 默认是 DefaultTargeter
  */
 @Component
-public class FeignClientFallbackFactory implements FallbackFactory<PaymentClient> {
+public class FeignClientFallbackFactory implements FallbackFactory<FeignPaymentClient.PaymentFeignClient> {
 
     /**
      * 服务降级 - 快速失败
      */
     @Override
-    public PaymentClient create(Throwable cause) {
-
-        // 只会出现 服务不可用 / 404 等异常
-        // 只要请求打到了服务 就一定是 Result 类型的响应
+    public FeignPaymentClient.PaymentFeignClient create(Throwable cause) {
 
         // TODO 服务降级
-        return new PaymentClient() {
+        return new FeignPaymentClient.PaymentFeignClient() {
             @Override
             public Result<Void> pay(PaymentCommand command) {
+                throw new RestException("%s 服务繁忙".formatted("shop-payment"));
+            }
+
+            @Override
+            public Result<WechatJsApiPaymentDto> wechatPay(PaymentCommand command) {
                 throw new RestException("%s 服务繁忙".formatted("shop-payment"));
             }
         };
