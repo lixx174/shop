@@ -35,7 +35,7 @@ public class OrderController {
     /**
      * 下单
      */
-    @PostMapping("/launch")
+    @PostMapping("launch")
     public Result<Void> launch(@RequestBody OrderLaunchCommand command) {
         service.launch(command);
         return Result.ok();

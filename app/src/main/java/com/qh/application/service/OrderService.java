@@ -21,7 +21,6 @@ public class OrderService {
     }
 
     public void launch(OrderLaunchCommand command) {
-
         paymentClient.pay();
         WechatJsApiPayment wechatJsApiPayment = paymentClient.wechatPay();
 
