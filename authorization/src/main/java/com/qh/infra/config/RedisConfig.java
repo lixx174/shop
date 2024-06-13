@@ -1,4 +1,4 @@
-package com.qh.ifra.config;
+package com.qh.infra.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;

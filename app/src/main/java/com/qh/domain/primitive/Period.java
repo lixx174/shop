@@ -17,4 +17,12 @@ public class Period {
     private LocalDateTime startTime;
 
     private LocalDateTime endTime;
+
+    public boolean isBetween(LocalDateTime ldt) {
+        if (ldt == null) {
+            return false;
+        }
+
+        return ldt.isAfter(startTime) && ldt.isBefore(endTime);
+    }
 }

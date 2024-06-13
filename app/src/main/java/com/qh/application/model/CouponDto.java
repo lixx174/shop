@@ -1,15 +1,18 @@
 package com.qh.application.model;
 
-import com.qh.domain.primitive.Coupons;
-import com.qh.domain.primitive.Period;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * 优惠卷
  *
  * @author Jinx
  */
+@Getter
+@Setter
 public class CouponDto {
 
     private String id;
@@ -20,25 +23,33 @@ public class CouponDto {
     /**
      * 优惠卷类型
      */
-    private Coupons type;
+    private String type;
     /**
-     * 折扣百分比 - {@link Coupons#DISCOUNT}时会有值
+     * 折扣百分比
      */
     private BigDecimal discount;
     /**
-     * 优惠金额 - {@link Coupons#FULL_DISCOUNT}或{@link Coupons#CASH}时会有值
+     * 优惠金额
      */
     private BigDecimal amount;
     /**
-     * 最低金额 - {@link Coupons#FULL_DISCOUNT}时会有值
+     * 最低金额
      */
     private BigDecimal minimumAmount;
     /**
-     * 优惠券有效时间段 - {@link Coupons#LIMITED_TIME}时会有值
+     * 优惠券有效时间开始时间
      */
-    private Period period;
+    private LocalDateTime startTime;
     /**
-     * 备注 - 使用说明
+     * 优惠券有效时间结束时间
+     */
+    private LocalDateTime endTime;
+    /**
+     * 备注
      */
     private String remark;
+    /**
+     * 优惠卷数量
+     */
+    private Integer count;
 }

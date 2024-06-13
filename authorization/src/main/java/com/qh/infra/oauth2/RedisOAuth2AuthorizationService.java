@@ -1,4 +1,4 @@
-package com.qh.ifra.oauth2;
+package com.qh.infra.oauth2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

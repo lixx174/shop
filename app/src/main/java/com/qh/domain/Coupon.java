@@ -3,6 +3,8 @@ package com.qh.domain;
 import com.qh.domain.primitive.CouponId;
 import com.qh.domain.primitive.Coupons;
 import com.qh.domain.primitive.Period;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
@@ -11,6 +13,8 @@ import java.math.BigDecimal;
  *
  * @author Jinx
  */
+@Getter
+@Setter
 public class Coupon {
 
     private CouponId id;

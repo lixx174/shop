@@ -1,4 +1,4 @@
-package com.qh.ifra.config;
+package com.qh.infra.config;
 
 
 import com.nimbusds.jose.jwk.JWKSet;
@@ -6,8 +6,8 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import com.qh.ifra.oauth2.Oauth2SmsAuthenticationConverter;
-import com.qh.ifra.oauth2.Oauth2SmsAuthenticationProvider;
+import com.qh.infra.oauth2.Oauth2SmsAuthenticationConverter;
+import com.qh.infra.oauth2.Oauth2SmsAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcOperations;
