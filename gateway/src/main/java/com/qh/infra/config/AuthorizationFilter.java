@@ -27,6 +27,8 @@ public class AuthorizationFilter implements GlobalFilter {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         UserDetail userDetail = tokenResolver.resolve(exchange.getRequest());
 
+        userDetail = new UserDetail();
+
         if (userDetail != null) {
             System.out.println("===> userDetail : " + userDetail);
             return chain.filter(exchange);

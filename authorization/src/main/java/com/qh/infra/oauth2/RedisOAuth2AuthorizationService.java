@@ -2,7 +2,7 @@ package com.qh.infra.oauth2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.redisson.api.RedissonClient;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
@@ -20,7 +20,7 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationService {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedissonClient redisson;
     private final ObjectMapper om;
 
 
@@ -30,39 +30,30 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
         OAuth2Authorization.Token<OAuth2RefreshToken> refreshToken = authorization.getRefreshToken();
 
         // FIXME 发一次请求
-        redisTemplate.opsForValue().set(
-                redisKey(authorization.getId()),
-                authorization,
-                Duration.between(Instant.now(), accessToken.getToken().getExpiresAt())
-        );
+        redisson.getBucket(redisKey(authorization.getId()))
+                .set(authorization, Duration.between(Instant.now(), accessToken.getToken().getExpiresAt()));
 
-        redisTemplate.opsForValue().set(
-                redisKey(accessToken.getToken().getTokenValue(), OAuth2TokenType.ACCESS_TOKEN),
-                authorization,
-                Duration.between(Instant.now(), accessToken.getToken().getExpiresAt())
-        );
+        redisson.getBucket(redisKey(accessToken.getToken().getTokenValue(), OAuth2TokenType.ACCESS_TOKEN))
+                .set(authorization, Duration.between(Instant.now(), accessToken.getToken().getExpiresAt()));
         if (refreshToken != null) {
-            redisTemplate.opsForValue().set(
-                    redisKey(refreshToken.getToken().getTokenValue(), OAuth2TokenType.REFRESH_TOKEN),
-                    authorization,
-                    Duration.between(Instant.now(), refreshToken.getToken().getExpiresAt())
-            );
+            redisson.getBucket(redisKey(refreshToken.getToken().getTokenValue(), OAuth2TokenType.REFRESH_TOKEN))
+                    .set(authorization, Duration.between(Instant.now(), refreshToken.getToken().getExpiresAt()));
         }
     }
 
     @Override
     public void remove(OAuth2Authorization authorization) {
-        redisTemplate.delete(redisKey(authorization.getId()));
+        redisson.getBucket(redisKey(authorization.getId())).delete();
     }
 
     @Override
     public OAuth2Authorization findById(String id) {
-        return deserialize(redisTemplate.opsForValue().get(redisKey(id)));
+        return deserialize(redisson.getBucket(redisKey(id)).get());
     }
 
     @Override
     public OAuth2Authorization findByToken(String token, OAuth2TokenType tokenType) {
-        return deserialize(redisTemplate.opsForValue().get(redisKey(token, tokenType)));
+        return deserialize(redisson.getBucket(redisKey(token, tokenType)).get());
     }
 
 

@@ -33,10 +33,8 @@ public interface CouponAssembler {
     List<CouponDto> assemble(List<UserCoupon> ucs);
 
 
-
-
     @Named("assembleCount")
-    default Integer assembleCount(CouponQuantity cq){
+    default Integer assembleCount(CouponQuantity cq) {
         return cq.getUsableCount();
     }
 }

@@ -1,14 +1,14 @@
 package com.qh.infra.token;
 
-import org.springframework.http.HttpRequest;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 /**
  * @author Jinx
  */
-public class OpaqueTokenResolver implements TokenResolver{
+@Component
+public class OpaqueTokenResolver implements TokenResolver {
     @Override
     public UserDetail resolve(ServerHttpRequest request) {
         String tokenValue = request.getHeaders().getFirst("authorization");
@@ -18,8 +18,6 @@ public class OpaqueTokenResolver implements TokenResolver{
 
             // TODO 校验token  解析token
             // FIXME 自己调用redis获取 / 远程调用认证服务获取
-
-
 
 
         }

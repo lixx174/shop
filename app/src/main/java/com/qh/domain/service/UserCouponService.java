@@ -12,7 +12,7 @@ import java.util.List;
 public class UserCouponService {
 
 
-    public List<UserCoupon> getUsable(List<UserCoupon> userCoupons){
+    public List<UserCoupon> getUsable(List<UserCoupon> userCoupons) {
 
 
         return null;

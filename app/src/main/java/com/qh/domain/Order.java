@@ -14,22 +14,21 @@ import java.util.List;
 public class Order {
 
     /**
-     *  订单id
+     * 订单id
      */
     private OrderId id;
 
     /**
-     *  订单金额
+     * 订单金额
      */
     private BigDecimal amount;
 
     private List<Coupon> coupons;
 
     /**
-     *  订单状态
+     * 订单状态
      */
     private OrderStatus status;
-
 
 
 }

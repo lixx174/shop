@@ -4,7 +4,8 @@ Content-Type: application/json
 Authorization: Bearer 1
 
 {
-  "orderId": "22",
+  "orderId": null,
+  "localDate": "2022-02-31",
   "productIds": [
     "1"
   ]
