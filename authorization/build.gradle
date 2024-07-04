@@ -1,12 +1,13 @@
 description = '认证中心'
 
 dependencies {
+    implementation project(':components:redis')
+
     implementation "org.springframework.boot:spring-boot-starter-oauth2-authorization-server"
     implementation "org.springframework.boot:spring-boot-starter-data-jdbc"
     implementation 'org.springframework.security:spring-security-cas'
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config'
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
-    implementation 'org.redisson:redisson-spring-boot-starter:3.31.0'
 
     compileOnly 'org.projectlombok:lombok'
 

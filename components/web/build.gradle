@@ -1,4 +1,4 @@
-description = '公共组件'
+description = 'web-公共组件'
 
 dependencies {
     implementation project(':types')

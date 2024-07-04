@@ -1,0 +1,11 @@
+description = '缓存中间件'
+
+dependencies {
+    implementation 'org.redisson:redisson-spring-boot-starter:3.31.0'
+
+    compileOnly 'org.projectlombok:lombok'
+
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}

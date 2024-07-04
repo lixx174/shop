@@ -11,7 +11,7 @@ compileJava {
 
 dependencies {
     implementation project(':types')
-    implementation project(':component')
+    implementation project(':components:web')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
