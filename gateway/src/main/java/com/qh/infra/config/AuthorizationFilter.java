@@ -1,13 +1,14 @@
 package com.qh.infra.config;
 
+import com.qh.domain.RedisClient;
+import com.qh.domain.UserDetail;
 import com.qh.infra.ServerWebExchangeSupport;
-import com.qh.infra.token.TokenResolver;
-import com.qh.infra.token.UserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -20,22 +21,20 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class AuthorizationFilter implements GlobalFilter {
 
-
-    private final TokenResolver tokenResolver;
+    private final RedisClient redisClient;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        UserDetail userDetail = tokenResolver.resolve(exchange.getRequest());
+        String token = exchange.getRequest().getHeaders().getFirst("authorization");
 
-        userDetail = new UserDetail();
+        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+            UserDetail userDetail = redisClient.get(() -> token.substring(7), UserDetail.class);
 
-        if (userDetail != null) {
-            System.out.println("===> userDetail : " + userDetail);
-            return chain.filter(exchange);
+            if (userDetail != null) {
+                return chain.filter(exchange);
+            }
         }
 
         return ServerWebExchangeSupport.onCompletion(exchange, HttpStatus.UNAUTHORIZED);
     }
-
-
 }

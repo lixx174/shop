@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
@@ -29,7 +30,8 @@ public class Oauth2SmsAuthenticationProvider implements AuthenticationProvider {
 
     private final OAuth2TokenGenerator<OAuth2Token> tokenGenerator;
     private final OAuth2AuthorizationService authorizationService;
-    private static final String ACCESS_TOKEN_REQUEST_ERROR_URI = "www.baidu.com";
+    private final UserDetailService userDetailService;
+    public static final String ACCESS_TOKEN_REQUEST_ERROR_URI = "www.baidu.com";
 
 
     @Override
@@ -49,8 +51,7 @@ public class Oauth2SmsAuthenticationProvider implements AuthenticationProvider {
             );
         }
 
-        // TODO redis存短信
-
+        UserDetails userDetails = userDetailService.loadUserByAuthenticationToken(smsAuthentication);
 
         // tokenContextBuilder
         DefaultOAuth2TokenContext.Builder tokenContextBuilder = DefaultOAuth2TokenContext.builder()

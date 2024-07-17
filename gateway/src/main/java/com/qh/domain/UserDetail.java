@@ -1,4 +1,4 @@
-package com.qh.infra.token;
+package com.qh.domain;
 
 import lombok.Getter;
 import lombok.Setter;
