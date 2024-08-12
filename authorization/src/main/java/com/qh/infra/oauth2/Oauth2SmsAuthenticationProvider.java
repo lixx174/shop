@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
-import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
@@ -21,6 +20,9 @@ import org.springframework.security.oauth2.server.authorization.context.Authoriz
 import org.springframework.security.oauth2.server.authorization.token.DefaultOAuth2TokenContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.util.Assert;
+
+import static org.springframework.security.oauth2.core.OAuth2ErrorCodes.ACCESS_DENIED;
+import static org.springframework.security.oauth2.core.OAuth2ErrorCodes.INVALID_CLIENT;
 
 /**
  * @author Jinx
@@ -40,25 +42,24 @@ public class Oauth2SmsAuthenticationProvider implements AuthenticationProvider {
 
         OAuth2ClientAuthenticationToken authenticatedClient = getAuthenticatedClient(authentication);
         RegisteredClient registeredClient = authenticatedClient.getRegisteredClient();
-
         if (registeredClient == null) {
-            throw new OAuth2AuthenticationException(
-                    new OAuth2Error(
-                            OAuth2ErrorCodes.INVALID_CLIENT,
-                            "registered client not find",
-                            ACCESS_TOKEN_REQUEST_ERROR_URI
-                    )
-            );
+            throwAuthenticationException(INVALID_CLIENT, "registered client not find");
         }
 
-        UserDetails userDetails = userDetailService.loadUserByAuthenticationToken(smsAuthentication);
+        //当前使用无状态token， 如果使用jwt 会用到该对象信息
+        UserDetails userDetails = userDetailService.authenticateAndLoadUserDetail(smsAuthentication);
+        if (!userDetails.isEnabled()) {
+            throwAuthenticationException(ACCESS_DENIED, "account disabled");
+        }
+        if (!userDetails.isAccountNonLocked()) {
+            throwAuthenticationException(ACCESS_DENIED, "account locked");
+        }
 
         // tokenContextBuilder
         DefaultOAuth2TokenContext.Builder tokenContextBuilder = DefaultOAuth2TokenContext.builder()
                 .registeredClient(registeredClient)
                 .principal(authenticatedClient)
                 .authorizationServerContext(AuthorizationServerContextHolder.getContext())
-                .tokenType(OAuth2TokenType.ACCESS_TOKEN)
                 .authorizationGrantType(Oauth2SmsAuthenticationConverter.GRANT_TYPE)
                 .authorizationGrant(smsAuthentication);
 
@@ -112,10 +113,16 @@ public class Oauth2SmsAuthenticationProvider implements AuthenticationProvider {
 
         throw new OAuth2AuthenticationException(
                 new OAuth2Error(
-                        OAuth2ErrorCodes.INVALID_CLIENT,
+                        INVALID_CLIENT,
                         "client not authenticate",
                         ACCESS_TOKEN_REQUEST_ERROR_URI
                 )
+        );
+    }
+
+    private void throwAuthenticationException(String errorCode, String description) {
+        throw new OAuth2AuthenticationException(
+                new OAuth2Error(errorCode, description, ACCESS_TOKEN_REQUEST_ERROR_URI)
         );
     }
 }

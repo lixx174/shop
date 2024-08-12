@@ -1,0 +1,20 @@
+server:
+  port: ${random.int[10000,30000]}
+  servlet:
+    context-path: /message
+
+spring:
+  application:
+    name: shop-message
+
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      config:
+        namespace: fd665b49-1c10-4f45-9abd-35f39854b74f
+      discovery:
+        namespace: fd665b49-1c10-4f45-9abd-35f39854b74f
+
+  config:
+    import:
+      - nacos:message.yml

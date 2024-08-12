@@ -8,6 +8,7 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.qh.infra.oauth2.Oauth2SmsAuthenticationConverter;
 import com.qh.infra.oauth2.Oauth2SmsAuthenticationProvider;
+import com.qh.infra.oauth2.UserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -43,7 +44,9 @@ public class SecurityConfig {
      * OAuth2AuthorizationEndpointConfigurer: 更多的是针对授权码的配置（guess）
      */
     @Bean
-    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http, OAuth2AuthorizationService authorizationService) throws Exception {
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
+                                                                      OAuth2AuthorizationService authorizationService,
+                                                                      UserDetailService userDetailService) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 
         http
@@ -53,7 +56,11 @@ public class SecurityConfig {
                                 config
                                         .accessTokenRequestConverter(new Oauth2SmsAuthenticationConverter())
                                         .authenticationProvider(
-                                                new Oauth2SmsAuthenticationProvider(tokenGenerator(), authorizationService)
+                                                new Oauth2SmsAuthenticationProvider(
+                                                        tokenGenerator(),
+                                                        authorizationService,
+                                                        userDetailService
+                                                )
                                         )
                 );
 

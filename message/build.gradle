@@ -1,0 +1,16 @@
+description = '消息中心'
+
+dependencies {
+    implementation project(':types')
+    implementation project(':components:redis')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config'
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
+
+    compileOnly 'org.projectlombok:lombok'
+
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}

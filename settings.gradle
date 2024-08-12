@@ -9,4 +9,5 @@ include 'components'
 include 'components:redis'
 include 'components:mq'
 include 'components:web'
+include 'message'
 

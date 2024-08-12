@@ -1,10 +1,13 @@
 package com.qh.infra.oauth2;
 
 import com.qh.domain.RedisClient;
+import com.qh.infra.redis.SmsCodeKey;
+import com.qh.infra.redis.UserDetailKey;
 import com.qh.infra.repository.UserDo;
 import com.qh.infra.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
@@ -25,24 +28,31 @@ public class UserDetailService {
     private final RedisClient redisClient;
     private final UserRepository userRepo;
 
-    public UserDetails loadUserByAuthenticationToken(Oauth2SmsAuthenticationToken authenticationToken) {
-        String smsCode = redisClient.get(() -> redisKey(authenticationToken.getMobile()), String.class);
+
+    /**
+     * 通过认证信息加载用户
+     *
+     * @param authenticationToken 认证信息
+     * @return userDetail
+     */
+    public UserDetails authenticateAndLoadUserDetail(Oauth2SmsAuthenticationToken authenticationToken) {
+        String smsCode = redisClient.get(new SmsCodeKey(authenticationToken.getMobile()), String.class);
 
         if (StringUtils.hasText(smsCode) && smsCode.equals(authenticationToken.getSmsCode())) {
-            Optional<UserDo> user = userRepo.findByMobile(authenticationToken.getMobile());
-            if (user.isPresent()) {
-                // TODO userDetail 做成领域？
-                // gateway 也会依赖该模型
-                return null;
-            } else {
-                throw new OAuth2AuthenticationException(
-                        new OAuth2Error(
-                                OAuth2ErrorCodes.INVALID_REQUEST,
-                                "invalid mobile : %s".formatted(authenticationToken.getMobile()),
-                                ACCESS_TOKEN_REQUEST_ERROR_URI
-                        )
-                );
+            UserDetails userDetails = redisClient.get(
+                    new UserDetailKey(authenticationToken.getMobile()), UserDetails.class
+            );
+
+            if (userDetails == null) {
+                Optional<UserDo> user = userRepo.findByMobile(authenticationToken.getMobile());
+                if (user.isPresent()) {
+                    return null;
+                } else {
+                    throw new UsernameNotFoundException("invalid mobile: %s".formatted(authenticationToken.getMobile()));
+                }
             }
+
+            return userDetails;
         }
 
         throw new OAuth2AuthenticationException(
@@ -52,9 +62,5 @@ public class UserDetailService {
                         ACCESS_TOKEN_REQUEST_ERROR_URI
                 )
         );
-    }
-
-    private String redisKey(String mobile) {
-        return "shop:authorization:sms:" + mobile;
     }
 }
