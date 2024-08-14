@@ -46,6 +46,7 @@ public class UserDetailService {
             if (userDetails == null) {
                 Optional<UserDo> user = userRepo.findByMobile(authenticationToken.getMobile());
                 if (user.isPresent()) {
+                    // TODO
                     return null;
                 } else {
                     throw new UsernameNotFoundException("invalid mobile: %s".formatted(authenticationToken.getMobile()));

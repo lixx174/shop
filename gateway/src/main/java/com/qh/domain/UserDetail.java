@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * 用户信息
@@ -16,7 +17,11 @@ import java.util.Set;
 @Setter
 public class UserDetail {
 
-    private String id;
+    private Integer id;
     private String name;
     private Set<String> permissions;
+
+    public boolean isAuthorized(Predicate<String> predicate) {
+        return permissions.stream().noneMatch(predicate);
+    }
 }

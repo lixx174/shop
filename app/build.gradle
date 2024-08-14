@@ -21,6 +21,7 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
     implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
+    implementation 'com.baomidou:mybatis-plus-spring-boot3-starter:3.5.7'
 
     runtimeOnly 'com.mysql:mysql-connector-j'
 
