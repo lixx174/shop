@@ -76,7 +76,9 @@ public class AuthorizationFilter implements GlobalFilter {
     private class WhiteList {
         private final Set<String> values = Set.of(
                 "/auth/oauth2/**",
-                "/message/sm/**"
+                "/message/sm/**",
+                // FIXME  for test
+                "/admin/**"
         );
 
         public boolean match(String path) {
