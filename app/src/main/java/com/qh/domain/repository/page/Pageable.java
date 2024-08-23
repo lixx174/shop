@@ -21,10 +21,11 @@ public interface Pageable {
 
     /**
      * 获取规范
+     * TODO 该规范应该单独为一个接口 不属于pageable自己
      *
      * @return 查询条件
      */
     default Specification getSpecification() {
-        return Specification.from();
+        return Specification.of();
     }
 }

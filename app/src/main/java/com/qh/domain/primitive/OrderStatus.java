@@ -1,19 +1,36 @@
 package com.qh.domain.primitive;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
 /**
  * @author Jinx
  */
-@Getter
-@RequiredArgsConstructor
-public class OrderStatus {
+public enum OrderStatus {
 
-    public static final OrderStatus WAIT_PAY = new OrderStatus("1");
-    public static final OrderStatus PAID = new OrderStatus("2");
-    public static final OrderStatus CANCELLED = new OrderStatus("3");
-    public static final OrderStatus FINISHED = new OrderStatus("2");
-
-    private final String value;
+    /**
+     * 待支付
+     */
+    PENDING,
+    /**
+     * 已支付
+     */
+    PAID,
+    /**
+     * 已发货
+     */
+    SHIPPED,
+    /**
+     * 已完成
+     */
+    COMPLETED,
+    /**
+     * 已取消
+     */
+    CANCELLED,
+    /**
+     * 退货中
+     */
+    RETURNING,
+    /**
+     * 已退货
+     */
+    RETURNED
 }

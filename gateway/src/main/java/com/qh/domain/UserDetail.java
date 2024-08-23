@@ -22,6 +22,6 @@ public class UserDetail {
     private Set<String> permissions;
 
     public boolean isAuthorized(Predicate<String> predicate) {
-        return permissions.stream().noneMatch(predicate);
+        return permissions.stream().anyMatch(predicate);
     }
 }

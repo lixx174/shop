@@ -1,0 +1,7 @@
+### 客户端模式认证
+POST http://127.0.0.1:8080/message/sm/send
+Content-Type: application/json
+
+{
+  "mobile": "13550556545"
+}

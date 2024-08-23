@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.Duration;
+
 /**
  * @author Jinx
  */
@@ -21,13 +23,20 @@ public class ShortMessageService {
     private final RedisClient redisClient;
 
     public void send(ShortMessageSendCommand command) {
-        Mobile mobile = new Mobile(command.getMobile());
+        // FIXME 限流
 
-        String code = redisClient.get(new SmsCodeKey(mobile.getNumber()), String.class);
+        Mobile mobile = new Mobile(command.getMobile());
+        SmsCodeKey key = new SmsCodeKey(mobile.getNumber());
+
+        String code = redisClient.get(key, String.class);
         if (StringUtils.hasText(code)) {
             throw new UnsupportedOperationException("don't send repeatedly");
         }
 
-        mobileClient.sendShortMessage(mobile, new ShortMessage());
+        // FIXME 应该放在domain？
+        ShortMessage message = new ShortMessage();
+        redisClient.set(key, message, message.getExpireDuration());
+
+        mobileClient.sendShortMessage(mobile, message);
     }
 }

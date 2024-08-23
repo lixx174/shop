@@ -2,6 +2,7 @@ package com.qh.domain;
 
 import lombok.Getter;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.UUID;
@@ -35,5 +36,9 @@ public class ShortMessage implements Message {
         id = UUID.randomUUID();
         value = String.format("%06d", new Random().nextInt(1000000));
         this.expireAt = expireAt;
+    }
+
+    public Duration getExpireDuration(){
+        return Duration.between(LocalDateTime.now(), expireAt);
     }
 }

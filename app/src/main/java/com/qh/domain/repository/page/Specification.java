@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -22,11 +24,12 @@ public class Specification implements Iterable<Example> {
 
     @Override
     public Iterator<Example> iterator() {
+        // TODO notnull warning
         return examples.iterator();
     }
 
-    public static Specification from(Example... examples) {
-        return new Specification(Set.of(examples));
+    public static Specification of(Example... examples) {
+        return new Specification(new HashSet<>(Arrays.asList(examples)));
     }
 
     public Specification offer(String column, Object value) {
@@ -34,7 +37,7 @@ public class Specification implements Iterable<Example> {
     }
 
     public Specification offer(String column, Object value, Operation operation) {
-        // FIXME column 为空  在此处做业务 or 由其自身实现
+        // TODO  check param
         return StringUtils.hasText(column) ? offer(new Example(column, value, operation)) : this;
     }
 

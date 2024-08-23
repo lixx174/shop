@@ -5,7 +5,10 @@ import com.qh.infra.redis.SmsCodeKey;
 import com.qh.infra.redis.UserDetailKey;
 import com.qh.infra.repository.UserDo;
 import com.qh.infra.repository.UserRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -14,6 +17,7 @@ import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import static com.qh.infra.oauth2.Oauth2SmsAuthenticationProvider.ACCESS_TOKEN_REQUEST_ERROR_URI;
@@ -47,6 +51,7 @@ public class UserDetailService {
                 Optional<UserDo> user = userRepo.findByMobile(authenticationToken.getMobile());
                 if (user.isPresent()) {
                     // TODO
+
                     return null;
                 } else {
                     throw new UsernameNotFoundException("invalid mobile: %s".formatted(authenticationToken.getMobile()));
@@ -63,5 +68,37 @@ public class UserDetailService {
                         ACCESS_TOKEN_REQUEST_ERROR_URI
                 )
         );
+    }
+
+
+    @Getter
+    @Setter
+    static class UserDetail implements UserDetails{
+
+        public UserDetail(UserDo user) {
+            this.id = user.getId();
+            this.mobile = user.getMobile();
+            this.username = user.getUsername();
+            this.password = user.getPassword();
+
+
+
+            this.enabled = user.getStatus() == null;
+            this.accountNonExpired = this.enabled;
+            this.accountNonLocked = this.enabled;
+            this.credentialsNonExpired = this.enabled;
+        }
+
+        private Integer id;
+        private String mobile;
+        private String username;
+        private String password;
+
+        private boolean accountNonExpired;
+        private boolean accountNonLocked;
+        private boolean credentialsNonExpired;
+        private boolean enabled;
+
+        private Collection<? extends GrantedAuthority> authorities;
     }
 }

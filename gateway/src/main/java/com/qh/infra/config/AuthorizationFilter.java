@@ -74,10 +74,13 @@ public class AuthorizationFilter implements GlobalFilter {
     }
 
     private class WhiteList {
-        private final Set<String> values = Set.of("oauth2/**");
+        private final Set<String> values = Set.of(
+                "/auth/oauth2/**",
+                "/message/sm/**"
+        );
 
         public boolean match(String path) {
-            return values.stream().noneMatch(str -> matcher.match(str, path));
+            return values.stream().anyMatch(str -> matcher.match(str, path));
         }
     }
 }

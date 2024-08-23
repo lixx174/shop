@@ -15,5 +15,5 @@ Content-Type: application/x-www-form-urlencoded
 Authorization: Basic shop-app shop-secret
 
 grant_type = sms &
-mobile = 1 &
-code = 110110
+mobile = 13550556545 &
+code = 837520
