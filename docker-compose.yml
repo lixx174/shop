@@ -41,7 +41,49 @@ services:
     depends_on:
       - mysql
 
+    # RocketMQ
+  rmq_ns:
+    image: apache/rocketmq:5.3.1
+    container_name: rmq_ns
+    ports:
+      - "9876:9876"
+    networks:
+      - rocketmq
+    command: sh mqnamesrv
+  rmq_broker:
+    image: apache/rocketmq:5.3.1
+    container_name: rmq_broker
+    ports:
+      - "10909:10909"
+      - "10911:10911"
+      - "10912:10912"
+    environment:
+      - NAMESRV_ADDR=rmq_ns:9876
+    depends_on:
+      - rmq_ns
+    networks:
+      - rocketmq
+    command: sh mqbroker
+  rmq_proxy:
+    image: apache/rocketmq:5.3.1
+    container_name: rmq_proxy
+    networks:
+      - rocketmq
+    depends_on:
+      - rmq_broker
+      - rmq_ns
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    restart: on-failure
+    environment:
+      - NAMESRV_ADDR=rmq_ns:9876
+    command: sh mqproxy
+
 volumes:
   mysql-data:
   redis-data:
 
+networks:
+  rocketmq:
+    driver: bridge
