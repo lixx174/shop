@@ -42,7 +42,6 @@ public class RouteConfig implements InitializingBean {
     /**
      * nacos 路由配置文件 data_id
      */
-
     private final static String ROUTE_CONFIG_ON_NACOS = "route.json";
 
 

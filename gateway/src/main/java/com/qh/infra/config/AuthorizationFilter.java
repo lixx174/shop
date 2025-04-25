@@ -78,7 +78,7 @@ public class AuthorizationFilter implements GlobalFilter {
                 "/auth/oauth2/**",
                 "/message/sm/**",
                 // FIXME  for test
-                "/admin/**"
+                "/app/**"
         );
 
         public boolean match(String path) {
