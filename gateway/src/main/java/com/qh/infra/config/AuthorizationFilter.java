@@ -10,6 +10,7 @@ import lombok.SneakyThrows;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
@@ -26,6 +27,7 @@ import java.util.Set;
  *
  * @author Jinx
  */
+@Order(2)
 @Configuration
 @RequiredArgsConstructor
 public class AuthorizationFilter implements GlobalFilter {

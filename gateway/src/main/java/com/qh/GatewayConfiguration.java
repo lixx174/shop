@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -24,7 +25,17 @@ public class GatewayConfiguration {
 
     private Whitelist whitelist = new Whitelist();
     private Map<String, RateLimiter> rateLimiter = new HashMap<>();
+    private GrayRelease grayRelease = new GrayRelease();
 
+    /**
+     * 灰度发布
+     */
+    @Getter
+    @Setter
+    public static class GrayRelease {
+        private boolean enable;
+        private Collection<String> ips = new HashSet<>();
+    }
 
     /**
      * 限流
